@@ -224,7 +224,10 @@
         setupRoutingGraph(note = 1) {
           const freq = [220.0, 246.94, 164.81, 146.83];
           var AudioContext = window.AudioContext || window.webkitAudioContext;
-          const context = new AudioContext();
+          const context = new AudioContext({
+            latencyHint: "interactive",
+            sampleRate: 44100,
+          });
           const hfo = context.createOscillator();
           hfo.frequency.value = freq[note - 1];
           hfo.connect(context.destination);
