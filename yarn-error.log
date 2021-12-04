@@ -1,0 +1,41 @@
+Arguments: 
+  /Users/ola/.nvm/versions/node/v16.11.1/bin/node /Users/ola/.yarn/bin/yarn.js init
+
+PATH: 
+  /Users/ola/.yarn/bin:/Users/ola/.config/yarn/global/node_modules/.bin:/Users/ola/.nvm/versions/node/v16.11.1/bin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.7.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/MacGPG2/bin:/Library/Apple/usr/bin:/Users/ola/.yarn/bin:/Users/ola/.config/yarn/global/node_modules/.bin:/Users/ola/.nvm/versions/node/v16.11.1/bin:/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.7.0/bin
+
+Yarn version: 
+  1.22.15
+
+Node version: 
+  16.11.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/Users/ola/.yarn/lib/cli.js:137145:13)
+      at Interface.emit (node:events:390:28)
+      at Interface._ttyWrite (node:readline:1081:16)
+      at ReadStream.onkeypress (node:readline:288:10)
+      at ReadStream.emit (node:events:390:28)
+      at emitKeys (node:internal/readline/utils:358:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (node:internal/readline/emitKeypressEvents:61:36)
+      at ReadStream.emit (node:events:390:28)
+      at addChunk (node:internal/streams/readable:315:12)
+
+npm manifest: 
+  {
+    "name": "simon-game",
+    "version": "1.0.0",
+    "main": "main.js",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

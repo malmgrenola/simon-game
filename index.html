@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background-color: black;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+      .main {
+        width: 100%;
+        height: 100%;
+      }
+      .idle {
+        opacity: 0.5;
+      }
+
+      .btn-press {
+        animation-name: btn-animate;
+        animation-duration: 0.5s;
+        animation-iteration-count: 1;
+      }
+
+      @keyframes btn-animate {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.5;
+        }
+      }
+      #start-screen {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 99999;
+        padding: 10px;
+        background: white;
+        border: 1px solid black;
+        border-radius: 20px;
+        margin: 0px;
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+        box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+      }
+
+      #stat-screen {
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 99999;
+        padding: 10px;
+        background: white;
+        border: 1px solid black;
+        border-radius: 20px;
+        margin: 0px;
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+        box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
+      }
+    </style>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="main">
+      <svg
+        version="1.1"
+        id="Lager_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 436 435.8"
+        style="enable-background: new 0 0 436 435.8"
+        xml:space="preserve"
+      >
+        <style type="text/css">
+          .st0 {
+            fill: #009640;
+            stroke: #000000;
+            stroke-miterlimit: 10;
+          }
+          .st1 {
+            fill: #fcea10;
+            stroke: #000000;
+            stroke-miterlimit: 10;
+          }
+          .st2 {
+            fill: #009fe3;
+            stroke: #000000;
+            stroke-miterlimit: 10;
+          }
+          .st3 {
+            fill: #e30613;
+            stroke: #000000;
+            stroke-miterlimit: 10;
+          }
+        </style>
+        <path
+          id="btn-4"
+          class="st0"
+          d="M436,223.4c-2.8,116.1-96.5,209.8-212.6,212.6V223.4H436z"
+        />
+        <path
+          id="btn-3"
+          class="st1"
+          d="M436,212.6H223.4V0C339.5,2.8,433.1,96.4,436,212.6z"
+        />
+        <path
+          id="btn-2"
+          class="st2"
+          d="M212.6,223.4v212.6C96.5,433.1,2.8,339.5,0,223.4H212.6z"
+        />
+        <path
+          id="btn-1"
+          class="st3"
+          d="M212.6,0v212.6H0C2.8,96.4,96.4,2.8,212.6,0z"
+        />
+      </svg>
+    </div>
+    <div id="start-screen">
+      <p>ready for a new game?</p>
+      <button id="start-screen-yes">Go!</button>
+    </div>
+    <div id="stat-screen">
+      <p><center>Level:</center></p>
+      <p>
+        <center><span id="stat-level">-</span></center>
+      </p>
+    </div>
+    <script>
+      $(document).ready(function () {
+        const simon = new Simon();
+        console.log(simon.info);
+      });
+
+      class Simon {
+        constructor() {
+          this.init();
+          console.log("simon loaded");
+        }
+
+        get info() {
+          console.log("info");
+          return "this is Simon";
+        }
+
+        init() {
+          $(`#${"btn-1"}`).addClass("idle");
+          $(`#${"btn-2"}`).addClass("idle");
+          $(`#${"btn-3"}`).addClass("idle");
+          $(`#${"btn-4"}`).addClass("idle");
+          this.playSimon();
+          console.log("Simon Init");
+        }
+
+        enableButtons(enable, cb = null) {
+          if (enable) {
+            $("#btn-1").mousedown((e) =>
+              this.btnAnimate(`#${e.target.id}`, cb)
+            );
+            $("#btn-2").mousedown((e) =>
+              this.btnAnimate(`#${e.target.id}`, cb)
+            );
+            $("#btn-3").mousedown((e) =>
+              this.btnAnimate(`#${e.target.id}`, cb)
+            );
+            $("#btn-4").mousedown((e) =>
+              this.btnAnimate(`#${e.target.id}`, cb)
+            );
+            return;
+          }
+          $("#btn-1").off("mousedown");
+          $("#btn-2").off("mousedown");
+          $("#btn-3").off("mousedown");
+          $("#btn-4").off("mousedown");
+        }
+
+        showStart(msg = "ready for a new game?") {
+          const enableButtons = (enable) => this.enableButtons(enable);
+          const play = () => this.play();
+          return new Promise((resolve, reject) => {
+            enableButtons(false);
+            $("#start-screen p").html(`
+            ${msg}
+            `);
+            $("#start-screen").fadeIn("fast");
+
+            $("#start-screen-yes").click(function (e) {
+              $("#pop").fadeOut("fast");
+              resolve("play");
+            });
+            $("#start-screen-yes, #start-screen-no").click(function (e) {
+              $("#start-screen").fadeOut("fast");
+            });
+          });
+        }
+
+        btnAnimate(id, cb) {
+          const buttonNumber = Number(id.slice(5));
+          const synth = this.setupRoutingGraph(buttonNumber);
+          $(id).addClass("btn-press");
+          setTimeout(function () {
+            $(id).removeClass("btn-press");
+            synth.stop(0);
+            if (cb) cb(buttonNumber);
+          }, 500);
+        }
+        setupRoutingGraph(note = 1) {
+          const freq = [220.0, 246.94, 164.81, 146.83];
+          const context = new AudioContext();
+          const hfo = context.createOscillator();
+          hfo.frequency.value = freq[note - 1];
+          hfo.connect(context.destination);
+          hfo.start(0);
+          return hfo;
+        }
+        whoami() {
+          console.log("WHO am I");
+        }
+        async playSeq(mem, level = 1) {
+          return new Promise((resolve, reject) => {
+            this.playback(mem, level, resolve);
+          });
+        }
+        async playback(mem, level, resolve) {
+          const speed = 1000 - level * 50;
+          for (const element of mem) {
+            await this.sleep(speed);
+            this.btnAnimate(`#btn-${element}`);
+          }
+          resolve();
+        }
+        async sleep(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+        async buttonPressed() {
+          return new Promise((resolve) => {
+            const buttonCallback = (id) => {
+              this.enableButtons(false);
+              resolve(id);
+            };
+            this.enableButtons(true, buttonCallback);
+          });
+        }
+        setlevel(level) {
+          $("#stat-level").html(`
+            ${level}
+            `);
+        }
+        async playSimon() {
+          let ans;
+          let msg;
+          while (true) {
+            // Starta nytt spel
+            this.setlevel("-");
+            ans = await this.showStart(msg);
+            let mem = [];
+            let gameOver = false;
+            let level = 0;
+
+            if (ans == "play") {
+              while (!gameOver) {
+                // add new number loop
+                mem.push(randomIntFromInterval(1, 4));
+                level = mem.length;
+                //console.log(`Level: ${level}`);
+                this.setlevel(level);
+
+                // play all numbers
+                await this.playSeq(mem, level);
+
+                // wait for number input loop
+                let i = 0;
+                while (i < mem.length) {
+                  //get button
+                  ans = await this.buttonPressed();
+
+                  if (Number(ans) !== mem[i]) {
+                    msg = `You got to level ${level} but missed! Try again! `;
+                    i = mem.length;
+                    gameOver = true;
+                  }
+                  i++;
+                }
+              }
+            }
+          }
+
+          function randomIntFromInterval(min, max) {
+            // min and max included
+            return Math.floor(Math.random() * (max - min + 1) + min);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
