@@ -151,6 +151,9 @@
 
       class Simon {
         constructor() {
+          this.hfo;
+          this.kbd;
+          this.context;
           this.init();
           console.log("simon loaded");
         }
@@ -158,6 +161,30 @@
         get info() {
           console.log("info");
           return "this is Simon";
+        }
+
+        createAudio() {
+          var AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.context = new AudioContext();
+
+          //freq.forEach((element) => {});
+          //var gain = context.createGain();
+        }
+
+        playNote(note = 1) {
+          console.log("play audio");
+
+          if (!this.context) this.createAudio();
+
+          const freq = [220.0, 246.94, 164.81, 146.83];
+
+          let hfo = this.context.createOscillator();
+
+          hfo.connect(this.context.destination);
+          hfo.frequency.value = freq[note - 1];
+          //this.hfo.frequency.value = freq[note - 1];
+          hfo.start(0);
+          return hfo;
         }
 
         init() {
@@ -213,42 +240,14 @@
 
         btnAnimate(id, cb) {
           const buttonNumber = Number(id.slice(5));
-          const synth = this.setupRoutingGraph(buttonNumber);
+          let hfo = this.playNote(buttonNumber);
+          const noteOff = () => hfo.stop(0);
           $(id).addClass("btn-press");
           setTimeout(function () {
             $(id).removeClass("btn-press");
-            synth.stop(0);
+            noteOff();
             if (cb) cb(buttonNumber);
           }, 500);
-        }
-        setupRoutingGraph(note = 1) {
-          const freq = [220.0, 246.94, 164.81, 146.83];
-          var AudioCtor = window.AudioContext || window.webkitAudioContext;
-
-          var desiredSampleRate = 44100;
-
-          var context = new AudioCtor();
-
-          if (
-            /(iPhone|iPad)/i.test(navigator.userAgent) &&
-            context.sampleRate !== desiredSampleRate
-          ) {
-            var buffer = context.createBuffer(1, 1, desiredSampleRate);
-            var dummy = context.createBufferSource();
-            dummy.buffer = buffer;
-            dummy.connect(context.destination);
-            dummy.start(0);
-            dummy.disconnect();
-
-            context.close(); // dispose old context
-            context = new AudioCtor();
-          }
-
-          const hfo = context.createOscillator();
-          hfo.frequency.value = freq[note - 1];
-          hfo.connect(context.destination);
-          hfo.start(0);
-          return hfo;
         }
         whoami() {
           console.log("WHO am I");
