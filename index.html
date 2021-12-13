@@ -26,7 +26,7 @@
 
       .btn-press {
         animation-name: btn-animate;
-        animation-duration: 0.5s;
+        animation-duration: 0.25s;
         animation-iteration-count: 1;
       }
 
@@ -57,16 +57,13 @@
       #stat-screen {
         display: block;
         position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 99999;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 99998;
         padding: 10px;
-        background: white;
-        border: 1px solid black;
-        border-radius: 20px;
+        color: white;
         margin: 0px;
-        -webkit-box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
-        box-shadow: 0px 0px 5px 0px rgba(164, 164, 164, 1);
       }
     </style>
     <script
@@ -114,22 +111,22 @@
         <path
           id="btn-4"
           class="st0"
-          d="M436,223.4c-2.8,116.1-96.5,209.8-212.6,212.6V223.4H436z"
+          d="M436,223.4c-2.8,116.1-96.5,209.8-212.6,212.6V324.6c54.7-2.7,98.6-46.6,101.3-101.3H436z"
         />
         <path
           id="btn-3"
           class="st1"
-          d="M436,212.6H223.4V0C339.5,2.8,433.1,96.4,436,212.6z"
+          d="M436,212.6H324.7c-2.7-54.8-46.6-98.7-101.4-101.4V0C339.5,2.8,433.1,96.4,436,212.6z"
         />
         <path
           id="btn-2"
           class="st2"
-          d="M212.6,223.4v212.6C96.5,433.1,2.8,339.5,0,223.4H212.6z"
+          d="M212.6,324.6v111.3C96.5,433.1,2.8,339.5,0,223.4h111.2C114,278.1,157.9,321.9,212.6,324.6z"
         />
         <path
           id="btn-1"
           class="st3"
-          d="M212.6,0v212.6H0C2.8,96.4,96.4,2.8,212.6,0z"
+          d="M212.6,0v111.2c-54.8,2.7-98.7,46.7-101.4,101.4H0C2.8,96.4,96.4,2.8,212.6,0z"
         />
       </svg>
     </div>
@@ -247,7 +244,7 @@
             $(id).removeClass("btn-press");
             noteOff();
             if (cb) cb(buttonNumber);
-          }, 500);
+          }, 300);
         }
         whoami() {
           console.log("WHO am I");
@@ -258,7 +255,7 @@
           });
         }
         async playback(mem, level, resolve) {
-          const speed = 1000 - level * 50;
+          const speed = 400; //1000 - level * 50;
           for (const element of mem) {
             await this.sleep(speed);
             this.btnAnimate(`#btn-${element}`);
