@@ -8,4 +8,4 @@ Game is deployed to [Github Pages](https://malmgrenola.github.io/simon-game/)
 
 - HTML
 - Javascript
-- Bottest11q111
+- Bottest11q1111
